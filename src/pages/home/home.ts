@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+
 
 import * as firebase from 'firebase/app';
 
@@ -17,9 +18,12 @@ export class HomePage {
   categories: FirebaseListObservable<any[]>;
   userName: string;
 
-  constructor(public navCtrl: NavController, private afAuth: AngularFireAuth, private db: AngularFireDatabase) {
+  constructor(public navCtrl: NavController
+        , public alertCtrl: AlertController
+        , private afAuth: AngularFireAuth
+        , private db: AngularFireDatabase) {
     this.user = afAuth.authState;
-    this.items = db.list('items');
+    // this.items = db.list('items');
 
     this.user.subscribe((user: firebase.User) => {
       if(user != null) {
@@ -36,6 +40,8 @@ export class HomePage {
   login(): void {
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
+
+  // TODO : Clear User related data.
   logout(): void {
      this.afAuth.auth.signOut();
   }
@@ -49,4 +55,33 @@ export class HomePage {
     this.categories.remove(category);
   }
 
+  showPrompt() {
+    let prompt = this.alertCtrl.create({
+      title: 'New Category',
+      message: "Enter a name for this new category you're so want to make",
+      inputs: [
+        {
+          name: 'categoryName',
+          placeholder: 'Category Name'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            this.categories.push(data);
+            console.log('Saved clicked');
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
 }
+
