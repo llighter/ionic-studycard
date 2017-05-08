@@ -44,4 +44,9 @@ export class HomePage {
     this.categories.push(category);
   }
 
+  // TODO : apply category type
+  deleteCategory(category: string): void {
+    this.categories.remove(category);
+  }
+
 }

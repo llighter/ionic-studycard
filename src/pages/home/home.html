@@ -19,8 +19,14 @@
   </ion-list>
 
   <ion-list>
-    <ion-item class="text" *ngFor="let category of categories | async">
-      {{category | json}}{{category.$value}}
-    </ion-item>
+    <ion-item-sliding #item *ngFor="let category of categories | async">
+      <ion-item class="text">
+        {{category | json}}{{category.$value}}
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="deleteCategory(category)">Delete</button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
+
 </ion-content>
