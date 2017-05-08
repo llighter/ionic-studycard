@@ -5,13 +5,22 @@
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+  <ion-item class="text">
+    {{ userName }}
+  </ion-item>
+  <button ion-button outline (click)="login()">Google Login</button>
+  <button ion-button outline (click)="logout()">Logout</button>
+
+  <ion-list>
+    <ion-item>
+      <ion-input type="text" placeholder="Category Name" #categoryName></ion-input>
+    </ion-item>
+    <button ion-button outline (click)="addCategory(categoryName.value)">Add Category</button>
+  </ion-list>
+
+  <ion-list>
+    <ion-item class="text" *ngFor="let category of categories | async">
+      {{category | json}}{{category.$value}}
+    </ion-item>
+  </ion-list>
 </ion-content>
