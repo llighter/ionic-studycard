@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
@@ -12,7 +12,7 @@ import * as firebase from 'firebase/app';
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage implements OnInit{
+export class HomePage {
   user: Observable<firebase.User>;
   categories: FirebaseListObservable<any[]>;
   userName: string;
@@ -21,10 +21,8 @@ export class HomePage implements OnInit{
         , public alertCtrl: AlertController
         , private afAuth: AngularFireAuth
         , private db: AngularFireDatabase) {
-  }
-
-  ngOnInit(): void {
-    this.user = this.afAuth.authState;
+    
+    this.user = afAuth.authState;
     this.user.subscribe((user: firebase.User) => {
       if(user != null) {
         this.userName = user.displayName;
