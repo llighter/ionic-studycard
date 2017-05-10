@@ -4,15 +4,17 @@ import { NavController, AlertController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
-
-
 import * as firebase from 'firebase/app';
+
+import { CardDetail } from '../card-detail/card-detail';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage implements OnInit{
+  pushPage: any;
+
   user: Observable<firebase.User>;
   categories: FirebaseListObservable<any[]>;
   userName: string;
@@ -24,6 +26,8 @@ export class HomePage implements OnInit{
   }
 
   ngOnInit(): void {
+    this.pushPage = CardDetail;
+
     this.user = this.afAuth.authState;
     this.user.subscribe((user: firebase.User) => {
       if(user != null) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
@@ -12,13 +12,15 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   selector: 'page-card-detail',
   templateUrl: 'card-detail.html',
 })
-export class CardDetail {
+export class CardDetail implements OnInit{
+  categoryTitle: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CardDetail');
+  ngOnInit(): void {
+    console.log(`[card-detail]${JSON.stringify(this.navParams)}`);
+    this.categoryTitle = this.navParams.get('categoryName');
   }
 
 }

@@ -21,7 +21,7 @@
 
   <ion-list>
     <ion-item-sliding #item *ngFor="let category of categories | async">
-      <ion-item class="text">
+      <ion-item class="text" [navPush]="pushPage" [navParams]="category">
         {{category | json}}{{category.$value}}
       </ion-item>
       <ion-item-options side="right">
