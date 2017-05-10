@@ -1,4 +1,4 @@
-# ionic-angularfire2
+# ionic-studycard
 This is ionic version of studycard system using angularfire2 v4.0.
 You can early access this application by installing using Ionic CLI.
 
