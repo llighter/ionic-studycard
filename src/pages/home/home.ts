@@ -29,7 +29,7 @@ export class HomePage implements OnInit{
       if(user != null) {
         this.userName = user.displayName;
         this.categories = this.db.list(user.uid);
-        this.categories.subscribe(categories => console.log(`[Categories]${categories}`));
+        this.categories.subscribe(categories => console.log(`[Categories]${JSON.stringify(categories)}`));
         console.log(`[constructor]userName : ${this.userName}`);
       } else {
         this.userName = 'Not yet Logged in..';
