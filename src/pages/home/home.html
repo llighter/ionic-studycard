@@ -12,11 +12,7 @@
   <button ion-button outline (click)="logout()">Logout</button>
 
   <ion-list>
-    <ion-item>
-      <ion-input type="text" placeholder="Category Name" #categoryName></ion-input>
-    </ion-item>
-    <button ion-button outline (click)="addCategory(categoryName.value)">Add Category</button>
-    <button ion-button outline (click)="showPrompt()">Show Prompt</button>
+    <button ion-button outline (click)="addCategory()">Add Category</button>
   </ion-list>
 
   <ion-list>

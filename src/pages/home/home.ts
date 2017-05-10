@@ -50,16 +50,12 @@ export class HomePage implements OnInit{
      this.afAuth.auth.signOut();
   }
 
-  addCategory(category: string): void {
-    this.categories.push(category);
-  }
-
   // TODO : apply category type
   deleteCategory(category: string): void {
     this.categories.remove(category);
   }
 
-  showPrompt() {
+  addCategory(): void {
     let prompt = this.alertCtrl.create({
       title: 'New Category',
       message: "Enter a name for this new category you're so want to make",
