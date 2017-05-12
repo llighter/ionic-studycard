@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+
+import { CardDTO } from '../../core/card_dto'
 
 /**
  * Generated class for the CardDetail page.
