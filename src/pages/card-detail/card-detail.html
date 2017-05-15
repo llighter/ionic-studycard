@@ -14,5 +14,28 @@
 
 
 <ion-content padding>
+  <ion-list>
 
+    <ion-item>
+      <ion-input type="text" placeholder="Question" #question></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" placeholder="Answer" #answer></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" placeholder="Source" #source></ion-input>
+    </ion-item>
+
+    <button ion-button color="secondary" (click)="insert(question.value, answer.value, source.value)">Insert</button>
+
+
+  </ion-list>
+  <ion-card>
+    <ion-card-header>
+      Header
+    </ion-card-header>
+    <ion-card-content>
+      The British use the term "header", but the American term "head-shot" the English simply refuse to adopt.
+    </ion-card-content>
+</ion-card>
 </ion-content>

@@ -19,7 +19,7 @@ export class HomePage implements OnInit{
   user: Observable<firebase.User>;
   categories: FirebaseListObservable<any[]>;
   userName: string;
-  rootRef: firebase.database.Reference;
+  // rootRef: firebase.database.Reference;
 
   constructor(public navCtrl: NavController
         , public alertCtrl: AlertController
@@ -36,12 +36,7 @@ export class HomePage implements OnInit{
     this.user.subscribe((user: firebase.User) => {
       if(user != null) {
         this.userName = user.displayName;
-
-        this.rootRef = this.db.database.ref();
-        console.log(`[RootRef-child]${this.rootRef.child('items').limitToFirst(2)}`);
-
-        this.categories = this.db.list(user.uid);
-        this.categories.subscribe(categories => console.log(`[Categories]${JSON.stringify(categories)}`));
+        this.categories = this.db.list(`${user.uid}/cetegories`);
         console.log(`[constructor]userName : ${this.userName}`);
       } else {
         this.userName = 'Not yet Logged in..';
@@ -70,6 +65,7 @@ export class HomePage implements OnInit{
   // TODO : Clear User related data.
   signout(): void {
      this.afAuth.auth.signOut();
+     this.categories = null;
   }
 
   // TODO : apply category type
