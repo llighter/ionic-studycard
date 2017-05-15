@@ -30,12 +30,12 @@
 
 
   </ion-list>
-  <ion-card>
+  <ion-card *ngFor="let query of queryObservable | async">
     <ion-card-header>
-      Header
+      {{ query.source }}
     </ion-card-header>
     <ion-card-content>
-      The British use the term "header", but the American term "head-shot" the English simply refuse to adopt.
+      {{ query.question }}, {{ query.answer }}
     </ion-card-content>
 </ion-card>
 </ion-content>

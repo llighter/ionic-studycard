@@ -93,6 +93,7 @@ export class HomePage implements OnInit{
         {
           text: 'Save',
           handler: data => {
+            this.db.database.ref(data.displayName);
             this.categories.push(data);
             console.log('Saved clicked');
           }

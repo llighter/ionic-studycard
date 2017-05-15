@@ -20,9 +20,12 @@ import * as firebase from 'firebase/app';
 })
 export class CardDetail implements OnInit{
   categoryTitle: string;
-  card: CardDTO;
+  card: CardDTO = new CardDTO();
+  showCard: CardDTO = new CardDTO();
   user: Observable<firebase.User>;
   uid: string;
+
+  queryObservable: FirebaseListObservable<any[]>;
 
   constructor(public navCtrl: NavController
           , public navParams: NavParams
@@ -38,6 +41,13 @@ export class CardDetail implements OnInit{
     this.user.subscribe((user: firebase.User) => {
       if(user != null) {
         this.uid = user.uid;
+
+        this.queryObservable = this.db.list(`${this.uid}/${this.categoryTitle}/stage1`, {
+          query: {
+            limitToFirst: 1
+          }
+        });
+
       }
     });
   }
@@ -48,8 +58,7 @@ export class CardDetail implements OnInit{
     this.card.source = source;
     this.card.failCount = 0;
 
-    this.db.list(`${this.uid}/categories/${this.categoryTitle}`).push(this.card);
-    
+    this.db.list(`${this.uid}/${this.categoryTitle}/stage1`).push(this.card);
   }
 
 }
