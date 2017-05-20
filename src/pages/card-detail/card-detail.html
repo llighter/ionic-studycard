@@ -15,27 +15,25 @@
 
 <ion-content padding>
   <ion-list>
+    <ion-fab bottom right>
+      <button ion-fab (click)="addCard()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
 
-    <ion-item>
-      <ion-input type="text" placeholder="Question" #question></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input type="text" placeholder="Answer" #answer></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input type="text" placeholder="Source" #source></ion-input>
-    </ion-item>
-
-    <button ion-button color="secondary" (click)="insert(question.value, answer.value, source.value)">Insert</button>
-
+    <button ion-button color="dark" (click)="filterBy(1)">S1</button>
+    <button ion-button color="dark" (click)="filterBy(2)">S2</button>
+    <button ion-button color="dark" (click)="filterBy(3)">S3</button>
+    <button ion-button color="dark" (click)="filterBy(4)">S4</button>
+    <button ion-button color="dark" (click)="filterBy(5)">S5</button>
 
   </ion-list>
   <ion-card *ngFor="let query of queryObservable | async">
     <ion-card-header>
-      {{ query.source }}
+      source: {{ query.source }}
     </ion-card-header>
     <ion-card-content>
-      {{ query.question }}, {{ query.answer }}
+      question : {{ query.question }}, answer: {{ query.answer }}
     </ion-card-content>
+    <button ion-button color="primary" (click)="success(query.$key, query)">Success</button>
+    <button ion-button color="danger" (click)="fail(query.$key, query)">Fail</button>
 </ion-card>
 </ion-content>

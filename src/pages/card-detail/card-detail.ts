@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import { CardDTO } from '../../core/card-dto';
 import { Observable } from 'rxjs/Observable';
+// import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as firebase from 'firebase/app';
 
 /**
@@ -20,15 +22,16 @@ import * as firebase from 'firebase/app';
 })
 export class CardDetail implements OnInit{
   categoryTitle: string;
-  card: CardDTO = new CardDTO();
-  showCard: CardDTO = new CardDTO();
   user: Observable<firebase.User>;
   uid: string;
 
+  card: CardDTO;
   queryObservable: FirebaseListObservable<any[]>;
+  stageSubject: BehaviorSubject<any>;
 
   constructor(public navCtrl: NavController
           , public navParams: NavParams
+          , public alertCtrl: AlertController
           , private db: AngularFireDatabase
           , private afAuth: AngularFireAuth) {
   }
@@ -37,14 +40,19 @@ export class CardDetail implements OnInit{
     console.log(`[card-detail]${JSON.stringify(this.navParams)}`);
     this.categoryTitle = this.navParams.get('categoryName');
 
+    this.card = new CardDTO();
+    this.stageSubject = new BehaviorSubject(1);
+
     this.user = this.afAuth.authState;
     this.user.subscribe((user: firebase.User) => {
       if(user != null) {
         this.uid = user.uid;
 
-        this.queryObservable = this.db.list(`${this.uid}/${this.categoryTitle}/stage1`, {
+        this.queryObservable = this.db.list(`${this.uid}/${this.categoryTitle}`, {
           query: {
-            limitToFirst: 1
+            orderByChild: 'stage',
+            equalTo: this.stageSubject,
+            limitToFirst: 1,
           }
         });
 
@@ -52,13 +60,79 @@ export class CardDetail implements OnInit{
     });
   }
 
-  insert(question:string, answer:string, source:string) {
-    this.card.question = question;
-    this.card.answer = answer;
-    this.card.source = source;
+  insert(data:any) {
+    this.card.question = data.question;
+    this.card.answer = data.answer;
+    this.card.source = data.source;
     this.card.failCount = 0;
+    this.card.stage = 1;
 
-    this.db.list(`${this.uid}/${this.categoryTitle}/stage1`).push(this.card);
+    this.db.list(`${this.uid}/${this.categoryTitle}`).push(this.card);
+  }
+
+  addCard(): void {
+    let prompt = this.alertCtrl.create({
+      title: 'New Card',
+      message: "Enter a name for this new category you're so want to make",
+      inputs: [
+        {
+          name: 'question',
+          placeholder: 'question'
+        },
+        {
+          name: 'answer',
+          placeholder: 'answer'
+        },
+        {
+          name: 'source',
+          placeholder: 'source'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            this.insert(data);
+            console.log('Saved clicked');
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  success(key:string, card: CardDTO) {
+
+    if(card.stage >= 1 && card.stage < 5) {
+      card.stage++;
+      console.log(`[success-stage]${card.stage}`);
+      this.queryObservable.push(card);
+    } 
+
+    this.queryObservable.remove(key);
+  }
+
+  fail(key:string, card: CardDTO) {
+
+    console.log(`[fail-stage]${card.stage}`);
+    card.stage = 1;
+
+    this.queryObservable.remove(key);
+    this.queryObservable.push(card);
+  }
+
+  filterBy(stage: string) {
+    // TODO: How can I know the value inside subject ?
+    // this.stageSubject.next(stage);
+    this.stageSubject.next(stage);
+
+    console.log(`[Stage]${this.stageSubject.getValue()}`);
   }
 
 }

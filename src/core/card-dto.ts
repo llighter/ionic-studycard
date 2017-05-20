@@ -3,6 +3,7 @@ export class CardDTO {
     answer: string;
     source: string;
     failCount: number;
+    stage: number;
 
     // TODO: add additional member
     // resource: string;
