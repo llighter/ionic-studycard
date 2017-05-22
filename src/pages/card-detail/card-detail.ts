@@ -24,6 +24,7 @@ export class CardDetail implements OnInit{
   categoryTitle: string;
   user: Observable<firebase.User>;
   uid: string;
+  show: boolean = true;
 
   card: CardDTO;
   queryObservable: FirebaseListObservable<any[]>;
@@ -133,6 +134,10 @@ export class CardDetail implements OnInit{
     this.stageSubject.next(stage);
 
     console.log(`[Stage]${this.stageSubject.getValue()}`);
+  }
+
+  turn() {
+    alert("test");
   }
 
 }

@@ -26,12 +26,15 @@
     <button ion-button color="dark" (click)="filterBy(5)">S5</button>
 
   </ion-list>
-  <ion-card *ngFor="let query of queryObservable | async">
+  <ion-card *ngFor="let query of queryObservable | async" (click)="show = !show">
     <ion-card-header>
-      source: {{ query.source }}
+      {{ query.source }}
     </ion-card-header>
-    <ion-card-content>
-      question : {{ query.question }}, answer: {{ query.answer }}
+    <ion-card-content class="card-detail" *ngIf="show">
+      {{ query.question }}
+    </ion-card-content>
+    <ion-card-content class="card-detail" *ngIf="!show">
+      {{ query.answer }}
     </ion-card-content>
     <button ion-button color="primary" (click)="success(query.$key, query)">Success</button>
     <button ion-button color="danger" (click)="fail(query.$key, query)">Fail</button>
