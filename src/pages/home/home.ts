@@ -8,6 +8,7 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import * as firebase from 'firebase/app';
 
 import { CardDetail } from '../card-detail/card-detail';
+import { CategoryDTO } from '../../core/category-dto';
 
 @Component({
   selector: 'page-home',
@@ -19,6 +20,8 @@ export class HomePage implements OnInit{
   user: Observable<firebase.User>;
   categories: FirebaseListObservable<any[]>;
   userName: string;
+  uid: string;
+  categotyDTO: CategoryDTO;
   // rootRef: firebase.database.Reference;
 
   constructor(public navCtrl: NavController
@@ -35,6 +38,7 @@ export class HomePage implements OnInit{
     this.user = this.afAuth.authState;
     this.user.subscribe((user: firebase.User) => {
       if(user != null) {
+        this.uid = user.uid;
         this.userName = user.displayName;
         this.categories = this.db.list(`${user.uid}/cetegories`);
         console.log(`[constructor]userName : ${this.userName}`);
@@ -67,10 +71,10 @@ export class HomePage implements OnInit{
      this.afAuth.auth.signOut();
      this.categories = null;
   }
-
-  // TODO : apply category type
-  deleteCategory(category: string): void {
-    this.categories.remove(category);
+  
+  deleteCategory(key: string, category: CategoryDTO): void {
+    this.categories.remove(key);
+    this.db.list(`${this.uid}/${category.categoryName}`).remove();
   }
 
   addCategory(): void {

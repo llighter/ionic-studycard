@@ -19,10 +19,10 @@
   <ion-list>
     <ion-item-sliding #item *ngFor="let category of categories | async">
       <ion-item class="text" [navPush]="pushPage" [navParams]="category">
-        {{category | json}}
+        {{ category.categoryName }}
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button color="danger" (click)="deleteCategory(category)">Delete</button>
+        <button ion-button color="danger" (click)="deleteCategory(category.$key, category)">Delete</button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
