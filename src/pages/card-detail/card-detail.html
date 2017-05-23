@@ -12,18 +12,36 @@
 
 </ion-header>
 
-
 <ion-content padding>
+  <div padding>
+    <ion-segment [(ngModel)]="stage">
+      <ion-segment-button value="stage1" (click)="filterBy(1)">
+        1
+      </ion-segment-button>
+      <ion-segment-button value="stage2" (click)="filterBy(2)">
+        2
+      </ion-segment-button>
+      <ion-segment-button value="stage3" (click)="filterBy(3)">
+        3
+      </ion-segment-button>
+      <ion-segment-button value="stage4" (click)="filterBy(4)">
+        4
+      </ion-segment-button>
+      <ion-segment-button value="stage5" (click)="filterBy(5)">
+        5
+      </ion-segment-button>
+    </ion-segment>
+  </div>
   <ion-list>
     <ion-fab bottom right>
       <button ion-fab (click)="addCard()"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
 
-    <button ion-button color="dark" (click)="filterBy(1)">S1</button>
+    <!--<button ion-button color="dark" (click)="filterBy(1)">S1</button>
     <button ion-button color="dark" (click)="filterBy(2)">S2</button>
     <button ion-button color="dark" (click)="filterBy(3)">S3</button>
     <button ion-button color="dark" (click)="filterBy(4)">S4</button>
-    <button ion-button color="dark" (click)="filterBy(5)">S5</button>
+    <button ion-button color="dark" (click)="filterBy(5)">S5</button>-->
 
   </ion-list>
   <ion-card *ngFor="let query of queryObservable | async" (click)="show = !show">
@@ -36,7 +54,20 @@
     <ion-card-content class="card-detail" *ngIf="!show">
       {{ query.answer }}
     </ion-card-content>
-    <button ion-button color="primary" (click)="success(query.$key, query)">Success</button>
-    <button ion-button color="danger" (click)="fail(query.$key, query)">Fail</button>
+    
+    <ion-grid>
+      <ion-row>
+        <ion-col col-4>
+          <button ion-button full color="primary" round block (click)="success(query.$key, query)">Success</button>
+        </ion-col>
+        <ion-col col-4>
+          <button ion-button full color="danger" round block (click)="fail(query.$key, query)">Fail</button>
+        </ion-col>
+        <ion-col col-4>
+          <button ion-button full color="dark" round block (click)="drop(query.$key, query)">Drop</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
 </ion-card>
 </ion-content>

@@ -128,16 +128,19 @@ export class CardDetail implements OnInit{
     this.queryObservable.push(card);
   }
 
+  drop(key:string, card: CardDTO) {
+
+    console.log(`[drop-card]${key}`);
+
+    this.queryObservable.remove(key);
+  }
+
   filterBy(stage: string) {
     // TODO: How can I know the value inside subject ?
     // this.stageSubject.next(stage);
     this.stageSubject.next(stage);
 
     console.log(`[Stage]${this.stageSubject.getValue()}`);
-  }
-
-  turn() {
-    alert("test");
   }
 
 }
