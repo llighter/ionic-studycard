@@ -25,6 +25,7 @@ export class CardDetail implements OnInit{
   user: Observable<firebase.User>;
   uid: string;
   show: boolean = true;
+  stageCount: number[] = [0,0,0,0,0];
 
   card: CardDTO;
   queryObservable: FirebaseListObservable<any[]>;
@@ -57,18 +58,53 @@ export class CardDetail implements OnInit{
           }
         });
 
+        // TODO: This is the Best way? Come on man...
+        this.db.list(`${this.uid}/${this.categoryTitle}`, {
+          query: {
+            orderByChild: 'stage',
+            equalTo: 1,
+          }
+        }).subscribe(list => this.stageCount[0] = list.length);
+        this.db.list(`${this.uid}/${this.categoryTitle}`, {
+          query: {
+            orderByChild: 'stage',
+            equalTo: 2,
+          }
+        }).subscribe(list => this.stageCount[1] = list.length);
+        this.db.list(`${this.uid}/${this.categoryTitle}`, {
+          query: {
+            orderByChild: 'stage',
+            equalTo: 3,
+          }
+        }).subscribe(list => this.stageCount[2] = list.length);
+        this.db.list(`${this.uid}/${this.categoryTitle}`, {
+          query: {
+            orderByChild: 'stage',
+            equalTo: 4,
+          }
+        }).subscribe(list => this.stageCount[3] = list.length);
+        this.db.list(`${this.uid}/${this.categoryTitle}`, {
+          query: {
+            orderByChild: 'stage',
+            equalTo: 5,
+          }
+        }).subscribe(list => this.stageCount[4] = list.length);
       }
     });
   }
 
   insert(data:any) {
-    this.card.question = data.question;
-    this.card.answer = data.answer;
-    this.card.source = data.source;
-    this.card.failCount = 0;
-    this.card.stage = 1;
+    if(!this.isStageFull()) {
+      this.card.question = data.question;
+      this.card.answer = data.answer;
+      this.card.source = data.source;
+      this.card.failCount = 0;
+      this.card.stage = 1;
 
-    this.db.list(`${this.uid}/${this.categoryTitle}`).push(this.card);
+      this.db.list(`${this.uid}/${this.categoryTitle}`).push(this.card);
+    } else {
+      console.log(`[x]Can't insert card into stage1.. It is now Full...`);
+    }
   }
 
   addCard(): void {
@@ -136,11 +172,20 @@ export class CardDetail implements OnInit{
   }
 
   filterBy(stage: string) {
-    // TODO: How can I know the value inside subject ?
+    // How can I know the value inside subject ?
     // this.stageSubject.next(stage);
     this.stageSubject.next(stage);
 
     console.log(`[Stage]${this.stageSubject.getValue()}`);
+  }
+  
+  isStageFull(): boolean {
+    let isFull: boolean;
+    console.log(`[stage-count]${this.stageCount}`);
+
+    isFull = this.stageCount[0] == 4 ? true : false;
+
+    return isFull;
   }
 
 }
