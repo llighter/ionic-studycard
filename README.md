@@ -10,6 +10,10 @@ Feel Free to Express your opinion.
 
 In the [Leitner system](https://en.wikipedia.org/wiki/Leitner_system), correctly answered cards are advanced to the next, less frequent box, while incorrectly answered cards return to the first box.
 
+## Prerequisite
+You Need to implements environments.ts file in environments folder.
+
+
 ## Install
 
 ```bash
