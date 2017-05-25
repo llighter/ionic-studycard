@@ -13,6 +13,8 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CardDetail } from '../pages/card-detail/card-detail';
 import { environment } from '../environments/environment';
+import { Login } from '../pages/login/login';
+import { AuthService } from '../providers/auth-service';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -24,7 +26,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ContactPage,
     HomePage,
     TabsPage,
-    CardDetail
+    CardDetail,
+    Login,
   ],
   imports: [
     BrowserModule,
@@ -40,13 +43,15 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ContactPage,
     HomePage,
     TabsPage,
-    CardDetail
+    CardDetail,
+    Login,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    Facebook
+    Facebook,
+    AuthService,
   ]
 })
 export class AppModule {}

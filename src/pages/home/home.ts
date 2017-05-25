@@ -47,30 +47,6 @@ export class HomePage implements OnInit{
       }
     });
   }
-
-  signin(): void {
-    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-  }
-
-  signInWithFacebook() {
-    if (this.platform.is('cordova')) {
-      return this.fb.login(['email', 'public_profile']).then(res => {
-        const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
-        return firebase.auth().signInWithCredential(facebookCredential);
-      })
-    }
-    else {
-      return this.afAuth.auth
-        .signInWithPopup(new firebase.auth.FacebookAuthProvider())
-        .then(res => console.log(res));
-    }
-  }
-
-  // TODO : Clear User related data.
-  signout(): void {
-     this.afAuth.auth.signOut();
-     this.categories = null;
-  }
   
   deleteCategory(key: string, category: CategoryDTO): void {
     this.categories.remove(key);

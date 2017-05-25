@@ -29,8 +29,12 @@ export class AuthService implements OnInit{
     });
   }
 
+  // TODO: In case, ngOnInit are not checking user is null,
+  //      then Can I compare with 'null' not 'ndefined'?
+  // TODO: In angularfire2 doc, They are use displayName:string. 
   get authenticated(): boolean {
-    return this.currentUser !== null;
+    console.log(`[call]authenticated(): ${this.currentUser}`);
+    return this.currentUser !== undefined;
   }
 
   signin(): void {
@@ -51,9 +55,9 @@ export class AuthService implements OnInit{
     }
   }
 
+  // TODO: Set RootPage to Login
   signout(): void {
     this.afAuth.auth.signOut();
-    //  this.categories = null;
   }
 
   displayName(): string {
