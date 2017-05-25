@@ -13,6 +13,7 @@
 <ion-content padding>
   <div padding>
     <ion-segment [(ngModel)]="stage">
+      <!-- TODO: apply *ngFor -->
       <ion-segment-button value="stage1" (click)="filterBy(1)">
         1
       </ion-segment-button>
@@ -34,13 +35,6 @@
     <ion-fab bottom right>
       <button ion-fab (click)="addCard()"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
-
-    <!--<button ion-button color="dark" (click)="filterBy(1)">S1</button>
-    <button ion-button color="dark" (click)="filterBy(2)">S2</button>
-    <button ion-button color="dark" (click)="filterBy(3)">S3</button>
-    <button ion-button color="dark" (click)="filterBy(4)">S4</button>
-    <button ion-button color="dark" (click)="filterBy(5)">S5</button>-->
-
   </ion-list>
   <ion-card *ngFor="let query of queryObservable | async" (click)="show = !show">
     <ion-card-header>

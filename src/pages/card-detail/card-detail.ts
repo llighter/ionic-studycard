@@ -59,6 +59,7 @@ export class CardDetail implements OnInit{
         });
 
         // TODO: This is the Best way? Come on man...
+        // option : use function
         this.db.list(`${this.uid}/${this.categoryTitle}`, {
           query: {
             orderByChild: 'stage',
