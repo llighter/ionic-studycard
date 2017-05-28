@@ -27,7 +27,7 @@ export const environment = {
 ```
 
 ## Preview
-![image](https://drive.google.com/open?id=0B2cqtZKAzlVcbnBYNDNYTkY5ejA)
+![image](https://github.com/llighter/ionic-studycard/tree/master/resources/leitner_system.gif)
 
 ## Install
 
