@@ -26,6 +26,9 @@ export const environment = {
 }
 ```
 
+## Preview
+![image](https://drive.google.com/open?id=0B2cqtZKAzlVcbnBYNDNYTkY5ejA)
+
 ## Install
 
 ```bash
