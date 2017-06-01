@@ -155,6 +155,9 @@ export class CardDetail implements OnInit{
     } 
 
     this.queryObservable.remove(key);
+    
+    // TODO: (개선)카드 앞면으로 초기화
+    this.show = true;
   }
 
   fail(key:string, card: CardDTO) {
@@ -162,8 +165,17 @@ export class CardDetail implements OnInit{
     card.stage = 1;
     card.failCount++;
 
+  
+    // TODO: 1단계 스테이지가 가득 찾는지 확인해야한다.
+    if(!this.isStageFull) {
+      alert("[x]1st stage is full...");
+    }
+
     this.queryObservable.remove(key);
     this.queryObservable.push(card);
+
+    // TODO: (개선)카드 앞면으로 초기화
+    this.show = true;
   }
 
   drop(key:string, card: CardDTO) {
@@ -185,7 +197,7 @@ export class CardDetail implements OnInit{
     let isFull: boolean;
     console.log(`[stage-count]${this.stageCount}`);
 
-    isFull = this.stageCount[0] == 4 ? true : false;
+    isFull = this.stageCount[0] == 30 ? true : false;
 
     return isFull;
   }
