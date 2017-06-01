@@ -36,6 +36,15 @@
       <button ion-fab (click)="addCard()"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
   </ion-list>
+
+  <div><h3>stagecount</h3></div>
+  <span>{{stageCount[0]}},</span>
+  <span>{{stageCount[1]}},</span>
+  <span>{{stageCount[2]}},</span>
+  <span>{{stageCount[3]}},</span>
+  <span>{{stageCount[4]}},</span>
+
+
   <ion-card *ngFor="let query of queryObservable | async" (click)="show = !show">
     <ion-card-header>
       {{ query.source }}
@@ -43,7 +52,7 @@
     <ion-card-content class="card-detail" *ngIf="show">
       {{ query.question }}
     </ion-card-content>
-    <ion-card-content class="card-detail" *ngIf="!show">
+    <ion-card-content class="card-detail answer" *ngIf="!show">
       {{ query.answer }}
     </ion-card-content>
     
