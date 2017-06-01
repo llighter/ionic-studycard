@@ -149,6 +149,7 @@ export class CardDetail implements OnInit{
 
     if(card.stage >= 1 && card.stage < 5) {
       card.stage++;
+      card.failCount = 0;
       console.log(`[success-stage]${card.stage}`);
       this.queryObservable.push(card);
     } 
@@ -158,8 +159,8 @@ export class CardDetail implements OnInit{
 
   fail(key:string, card: CardDTO) {
 
-    console.log(`[fail-stage]${card.stage}`);
     card.stage = 1;
+    card.failCount++;
 
     this.queryObservable.remove(key);
     this.queryObservable.push(card);
