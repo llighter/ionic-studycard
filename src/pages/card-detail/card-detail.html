@@ -12,21 +12,21 @@
 
 <ion-content padding>
   <div padding>
-    <ion-segment [(ngModel)]="stage">
+    <ion-segment [(ngModel)]="currentSegment">
       <!-- TODO: apply *ngFor -->
-      <ion-segment-button value="stage1" (click)="filterBy(1)">
+      <ion-segment-button value="stage1" (ionSelect)="filterBy(1)">
         1
       </ion-segment-button>
-      <ion-segment-button value="stage2" (click)="filterBy(2)">
+      <ion-segment-button value="stage2" (ionSelect)="filterBy(2)">
         2
       </ion-segment-button>
-      <ion-segment-button value="stage3" (click)="filterBy(3)">
+      <ion-segment-button value="stage3" (ionSelect)="filterBy(3)">
         3
       </ion-segment-button>
-      <ion-segment-button value="stage4" (click)="filterBy(4)">
+      <ion-segment-button value="stage4" (ionSelect)="filterBy(4)">
         4
       </ion-segment-button>
-      <ion-segment-button value="stage5" (click)="filterBy(5)">
+      <ion-segment-button value="stage5" (ionSelect)="filterBy(5)">
         5
       </ion-segment-button>
     </ion-segment>
@@ -37,12 +37,17 @@
     </ion-fab>
   </ion-list>
 
-  <div><h3>stagecount</h3></div>
-  <span>{{stageCount[0]}},</span>
-  <span>{{stageCount[1]}},</span>
-  <span>{{stageCount[2]}},</span>
-  <span>{{stageCount[3]}},</span>
-  <span>{{stageCount[4]}},</span>
+  <div align="center"><h3>stage count</h3></div>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-2>{{stageCount[0]}}/30</ion-col>
+      <ion-col col-2>{{stageCount[1]}}/60</ion-col>
+      <ion-col col-2>{{stageCount[2]}}/150</ion-col>
+      <ion-col col-2>{{stageCount[3]}}/240</ion-col>
+      <ion-col col-2>{{stageCount[4]}}/450</ion-col>
+      <ion-col col-2>RSV</ion-col>
+    </ion-row>
+  </ion-grid>
 
 
   <ion-card *ngFor="let query of queryObservable | async" (click)="show = !show">
