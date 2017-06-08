@@ -37,14 +37,16 @@ export class HomePage implements OnInit{
 
     this.user = this.afAuth.authState;
     this.user.subscribe((user: firebase.User) => {
-      if(user != null) {
-        this.uid = user.uid;
-        this.userName = user.displayName;
-        this.categories = this.db.list(`${user.uid}/cetegories`);
-        console.log(`[constructor]userName : ${this.userName}`);
-      } else {
-        this.userName = 'Not yet Logged in..';
-      }
+      this.uid = user.uid;
+      this.userName = user.displayName;
+      this.categories = this.db.list(`${user.uid}/cetegories`);
+      // if(user != null) {
+      //   this.uid = user.uid;
+      //   this.userName = user.displayName;
+      //   this.categories = this.db.list(`${user.uid}/cetegories`);
+      // } else {
+      //   this.userName = 'Not yet Logged in..';
+      // }
     });
   }
   
