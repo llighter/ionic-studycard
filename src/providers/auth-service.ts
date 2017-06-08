@@ -1,7 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Facebook } from '@ionic-native/facebook';
 
-import { Observable } from 'rxjs/Observable';
 import { Platform } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -10,31 +9,21 @@ import 'rxjs/add/operator/map';
 
 
 @Injectable()
-export class AuthService implements OnInit{
-  private user: Observable<firebase.User>;
-  private currentUser: firebase.User;
+export class AuthService {
+  // private user: Observable<firebase.User>;
+
+  private displayName: string;
 
   constructor(private afAuth: AngularFireAuth
         , private platform: Platform
         , private fb: Facebook) {
-    console.log('Hello AuthService Provider');
-  }
-
-  ngOnInit(): void {
-    this.user = this.afAuth.authState;
-    this.user.subscribe((user: firebase.User) => {
+    this.afAuth.authState.subscribe((user: firebase.User) => {
       if(user != null) {
-        this.currentUser = user;
+        this.displayName = user.displayName;
+      } else {
+        this.displayName = 'Not Logged in..';
       }
     });
-  }
-
-  // TODO: In case, ngOnInit are not checking user is null,
-  //      then Can I compare with 'null' not 'ndefined'?
-  // TODO: In angularfire2 doc, They are use displayName:string. 
-  get authenticated(): boolean {
-    console.log(`[call]authenticated(): ${this.currentUser}`);
-    return this.currentUser !== undefined;
   }
 
   signin(): void {
@@ -60,12 +49,5 @@ export class AuthService implements OnInit{
     this.afAuth.auth.signOut();
   }
 
-  displayName(): string {
-    if (this.currentUser !== null) {
-      return this.currentUser.displayName;
-    } else {
-      return '';
-    }
-  }
 
 }
