@@ -7,5 +7,25 @@
 </ion-header>
 
 <ion-content padding>
-
+  <ion-item>
+    <ion-label>Gender</ion-label>
+    <ion-select [(ngModel)]="gender">
+      <ion-option value="f">Female</ion-option>
+      <ion-option value="m">Male</ion-option>
+    </ion-select>
+  </ion-item>
+  <ngx-charts-bar-horizontal-stacked
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="multi"
+    [gradient]="gradient"
+    [xAxis]="showXAxis"
+    [yAxis]="showYAxis"
+    [legend]="showLegend"
+    [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [xAxisLabel]="xAxisLabel"
+    [yAxisLabel]="yAxisLabel"
+    (select)="onSelect($event)">
+  </ngx-charts-bar-horizontal-stacked>
 </ion-content>
