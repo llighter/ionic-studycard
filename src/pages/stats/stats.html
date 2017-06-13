@@ -33,7 +33,7 @@
       Top 5 Fail Count
     </ion-card-header>
     <ion-card-content *ngFor="let card of top5Observable | async">
-      {{ card.stage }}, {{ card.failCount }}, {{ card.answer }}
+      Stage: {{ card.stage }}, Fail Count: {{ card.failCount }}, Answer: {{ card.answer }}
     </ion-card-content>
   </ion-card>
 
