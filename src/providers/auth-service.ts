@@ -13,6 +13,7 @@ export class AuthService {
   // private user: Observable<firebase.User>;
 
   private displayName: string;
+  private uid: string;
 
   constructor(private afAuth: AngularFireAuth
         , private platform: Platform
@@ -20,6 +21,8 @@ export class AuthService {
     this.afAuth.authState.subscribe((user: firebase.User) => {
       if(user != null) {
         this.displayName = user.displayName;
+        this.uid = user.uid;
+        console.log(`[auth-service]now we have a uid:${this.uid}..`);
       } else {
         this.displayName = 'Not Logged in..';
       }
@@ -47,6 +50,11 @@ export class AuthService {
   // TODO: Set RootPage to Login
   signout(): void {
     this.afAuth.auth.signOut();
+  }
+
+  getUid(): string {
+    console.log(`[auth-service]invoke getUid():${this.uid}`);
+    return this.uid;
   }
 
 

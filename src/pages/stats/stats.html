@@ -7,25 +7,36 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-item>
-    <ion-label>Category</ion-label>
-    <ion-select [(ngModel)]="gender">
-      <ion-option value="f">Spring</ion-option>
-      <ion-option value="m">Male</ion-option>
-    </ion-select>
-  </ion-item>
-  <ngx-charts-bar-horizontal-stacked
-    [view]="view"
-    [scheme]="colorScheme"
-    [results]="multi"
-    [gradient]="gradient"
-    [xAxis]="showXAxis"
-    [yAxis]="showYAxis"
-    [legend]="showLegend"
-    [showXAxisLabel]="showXAxisLabel"
-    [showYAxisLabel]="showYAxisLabel"
-    [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel"
-    (select)="onSelect($event)">
-  </ngx-charts-bar-horizontal-stacked>
+  <ion-card>
+    <ion-item>
+      <ion-label>Category</ion-label>
+      <ion-select [(ngModel)]="selectedCategory" (ngModelChange)="updateStageCount()">
+        <ion-option *ngFor="let category of categories | async">
+          {{ category.categoryName }}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      Bar Chart
+    </ion-card-header>
+    <ion-card-content>
+      <canvas #barCanvas height="300"></canvas>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- TODO: Improve badge design -->
+  <ion-card *ngIf="selectedCategory">
+    <ion-card-header>
+      Top 5 Fail Count
+    </ion-card-header>
+    <ion-card-content *ngFor="let card of top5Observable | async">
+      Stage: {{ card.stage }}, Fail Count: {{ card.failCount }}, Answer: {{ card.answer }}
+    </ion-card-content>
+  </ion-card>
+
+  
+
 </ion-content>
