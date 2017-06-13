@@ -130,7 +130,6 @@ export class CardDetail implements OnInit{
 
     if(card.stage >= 1 && card.stage < 5) {
       if(!this.isStageFull(++card.stage)) {
-        card.failCount = 0;
         this.queryObservable.push(card);
         this.queryObservable.remove(key);
       } else {
@@ -172,6 +171,9 @@ export class CardDetail implements OnInit{
   drop(key:string, card: CardDTO) {
     console.log(`[drop-card]${key}`);
     this.queryObservable.remove(key);
+
+    // TODO: (개선)카드 앞면으로 초기화
+    this.show = true;
   }
 
   filterBy(stage: string) {

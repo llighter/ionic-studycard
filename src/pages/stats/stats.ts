@@ -3,8 +3,9 @@ import { NavController } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import { Chart } from 'chart.js';
+import { Observable } from 'rxjs/Observable';
+import { CardDTO } from '../../core/card-dto';
 import { AuthService } from '../../providers/auth-service';
-// import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'page-stats',
@@ -19,6 +20,7 @@ export class StatsPage implements OnInit {
   private stageCount: number[] = [0,0,0,0,0];
   private remainCount: number[] = [0,0,0,0,0];
   private totalCount: number[] = [30, 60, 150, 240, 450];
+  private top5Observable: Observable<CardDTO[]>;
 
   constructor(public navCtrl: NavController
         , private _auth: AuthService
@@ -80,6 +82,18 @@ export class StatsPage implements OnInit {
         this.barChart.data.datasets[0].data = this.stageCount;
         this.barChart.update();
       });
+    });
+
+    // TODO: I don't know whether It's a right place to call this method
+    this.getTopFailCount();
+  }
+
+  getTopFailCount(): void {
+    this.top5Observable = this.db.list(`${this.uid}/${this.selectedCategory.trim()}`, {
+      query: {
+        orderByChild: 'failCount',
+        limitToLast: 5
+      }
     });
   }
 }

@@ -7,14 +7,16 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-item>
-    <ion-label>Category</ion-label>
-    <ion-select [(ngModel)]="selectedCategory" (ngModelChange)="updateStageCount()">
-      <ion-option *ngFor="let category of categories | async">
-        {{ category.categoryName }}
-      </ion-option>
-    </ion-select>
-  </ion-item>
+  <ion-card>
+    <ion-item>
+      <ion-label>Category</ion-label>
+      <ion-select [(ngModel)]="selectedCategory" (ngModelChange)="updateStageCount()">
+        <ion-option *ngFor="let category of categories | async">
+          {{ category.categoryName }}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-card>
 
   <ion-card>
     <ion-card-header>
@@ -24,5 +26,17 @@
       <canvas #barCanvas height="300"></canvas>
     </ion-card-content>
   </ion-card>
+
+  <!-- TODO: Improve badge design -->
+  <ion-card *ngIf="selectedCategory">
+    <ion-card-header>
+      Top 5 Fail Count
+    </ion-card-header>
+    <ion-card-content *ngFor="let card of top5Observable | async">
+      {{ card.stage }}, {{ card.failCount }}, {{ card.answer }}
+    </ion-card-content>
+  </ion-card>
+
+  
 
 </ion-content>
