@@ -94,6 +94,6 @@ export class StatsPage implements OnInit {
         orderByChild: 'failCount',
         limitToLast: 5
       }
-    });
+    }).map( (list) => { return list.reverse() } );
   }
 }
