@@ -8,12 +8,10 @@
   <ion-item class="text">
     Welcome. {{ userName }}
   </ion-item>
-  
-  <ion-list>
-    <ion-fab bottom right>
-      <button ion-fab (click)="addCategory()"><ion-icon name="add"></ion-icon></button>
-    </ion-fab>
-  </ion-list>
+
+  <ion-fab bottom right>
+    <button ion-fab (click)="addCategory()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 
   <ion-list>
     <ion-item-sliding #item *ngFor="let category of categories | async">

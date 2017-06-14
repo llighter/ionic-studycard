@@ -69,6 +69,7 @@ export class StatsPage implements OnInit {
   }
 
   // TODO: need to integrate with card-detail's method: updateStageCount()
+  // while this graph don't need Reserved Stage, card-detail need it.
   updateStageCount(): void {
     this.stageCount.forEach((stage, index) => {
       this.db.list(`${this.uid}/${this.selectedCategory.trim()}`, {

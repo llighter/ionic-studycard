@@ -4,7 +4,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import { CardDTO } from '../../core/card-dto';
-import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as firebase from 'firebase/app';
 
@@ -16,14 +15,16 @@ import * as firebase from 'firebase/app';
 })
 export class CardDetail implements OnInit{
   categoryTitle: string;
-  user: Observable<firebase.User>;
+  // user: Observable<firebase.User>;
   uid: string;
   show: boolean = true;
-  stageCount: number[] = [0,0,0,0,0];
+  stageCount: number[] = [0,0,0,0,0,0];
   currentSegment: string;
 
   card: CardDTO;
   queryObservable: FirebaseListObservable<any[]>;
+  reservedStageObservable: FirebaseListObservable<any[]>;
+  fillCountSubject: BehaviorSubject<any>;
   stageSubject: BehaviorSubject<any>;
 
   constructor(public navCtrl: NavController
@@ -39,10 +40,11 @@ export class CardDetail implements OnInit{
 
     this.currentSegment = "stage1";
     this.card = new CardDTO();
+    this.fillCountSubject = new BehaviorSubject(0);
     this.stageSubject = new BehaviorSubject(1);
 
-    this.user = this.afAuth.authState;
-    this.user.subscribe((user: firebase.User) => {
+    // this.user = this.afAuth.authState;
+    this.afAuth.authState.subscribe((user: firebase.User) => {
       if(user != null) {
         this.uid = user.uid;
 
@@ -51,6 +53,15 @@ export class CardDetail implements OnInit{
             orderByChild: 'stage',
             equalTo: this.stageSubject,
             limitToFirst: 1,
+          }
+        });
+
+        this.reservedStageObservable = this.db.list(`${this.uid}/${this.categoryTitle}`, {
+          preserveSnapshot: true,
+          query: {
+            orderByChild: 'stage',
+            equalTo: 0,
+            limitToFirst: this.fillCountSubject
           }
         });
 
@@ -64,7 +75,7 @@ export class CardDetail implements OnInit{
       this.db.list(`${this.uid}/${this.categoryTitle}`, {
         query: {
           orderByChild: 'stage',
-          equalTo: index+1,
+          equalTo: index,
         }
       }).subscribe(list => this.stageCount[index] = list.length);
     });
@@ -75,7 +86,7 @@ export class CardDetail implements OnInit{
       this.card.question = data.question;
       this.card.answer = data.answer;
       this.card.source = data.source;
-      this.card.stage = 1;
+      this.card.stage = 0;  // reserve stage is 0
 
       this.db.list(`${this.uid}/${this.categoryTitle}`).push(this.card);
     } else {
@@ -129,7 +140,7 @@ export class CardDetail implements OnInit{
   success(key:string, card: CardDTO) {
 
     if(card.stage >= 1 && card.stage < 5) {
-      if(!this.isStageFull(++card.stage)) {
+      if (!this.isStageFull(++card.stage)) {
         this.queryObservable.push(card);
         this.queryObservable.remove(key);
       } else {
@@ -150,7 +161,6 @@ export class CardDetail implements OnInit{
 
     card.failCount++;
 
-    // TODO: 1단계 스테이지가 가득 찾는지 확인해야한다.
     if(this.isStageFull(1) && card.stage != 1) {
       let alert = this.alertCtrl.create({
         title: 'First Stage is now Full!',
@@ -183,7 +193,6 @@ export class CardDetail implements OnInit{
   
   isStageFull(level): boolean {
     let isFull: boolean = false;
-    console.log(`[stage-count]${this.stageCount}`);
 
     switch(level) {
       case 1:
@@ -204,6 +213,58 @@ export class CardDetail implements OnInit{
     }
 
     return isFull;
+  }
+
+  importFromReserve():void {
+    let alert = this.alertCtrl.create({
+      title: '# of card is too low',
+      message: `Do you want to fill cards from reserved stage?
+        (R's stage count: ${this.stageCount[0]})`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: () => {
+            console.log('OK clicked');
+            this.fillByReservedStage();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  fillByReservedStage(): void {
+    let remainArea = 30 - this.stageCount[1];
+    let numOfReservedCards = this.stageCount[0];
+
+    if(numOfReservedCards == 0) {
+      console.log("reserved stage is empty..");
+    } else if(remainArea >= numOfReservedCards) {
+      this.fillCountSubject.next(numOfReservedCards);
+    } else if(remainArea < numOfReservedCards) {
+      this.fillCountSubject.next(remainArea);
+    }
+    console.log(`[Current-count subject]${this.fillCountSubject.getValue()}`);
+
+    // TODO. 어쩔 수 없다. 그냥 키값을 다른 배열에 저장해 놓고 
+    // 하나하나 데이터 업데이트 한다음에 다시 뺏다 넣어야 할것 같다.
+    this.reservedStageObservable.subscribe(snapshots => {
+      snapshots.forEach(snapshot => {
+        console.log(snapshot.key);
+        console.log(snapshot.val());
+
+        // this.queryObservable.remove(snapshot.key);
+        // snapshot.val().stage = 1;
+        // this.queryObservable.push(snapshot.val());
+      });
+    })
   }
 
 }

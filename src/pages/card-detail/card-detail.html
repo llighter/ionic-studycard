@@ -31,20 +31,29 @@
       </ion-segment-button>
     </ion-segment>
   </div>
-  <ion-list>
-    <ion-fab bottom right>
-      <button ion-fab (click)="addCard()"><ion-icon name="add"></ion-icon></button>
-    </ion-fab>
-  </ion-list>
+
+  <ion-fab bottom right >
+   <button ion-fab>
+     <ion-icon ios="ios-apps" md="md-apps"></ion-icon>
+   </button>
+   <ion-fab-list side="left">
+      <button ion-fab (click)="addCard()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+      <button ion-fab (click)="importFromReserve()">
+        <ion-icon ios="ios-battery-charging" md="md-battery-charging"></ion-icon>
+      </button>
+   </ion-fab-list>
+  </ion-fab>
 
   <ion-grid>
     <ion-row>
-      <ion-col col-2 class="count">{{stageCount[0]}}/30</ion-col>
-      <ion-col col-2 class="count">{{stageCount[1]}}/60</ion-col>
-      <ion-col col-2 class="count">{{stageCount[2]}}/150</ion-col>
-      <ion-col col-2 class="count">{{stageCount[3]}}/240</ion-col>
-      <ion-col col-2 class="count">{{stageCount[4]}}/450</ion-col>
-      <ion-col col-2 class="count">RSV</ion-col>
+      <ion-col col-2 class="count">{{stageCount[0]}}/R</ion-col>
+      <ion-col col-2 class="count">{{stageCount[1]}}/30</ion-col>
+      <ion-col col-2 class="count">{{stageCount[2]}}/60</ion-col>
+      <ion-col col-2 class="count">{{stageCount[3]}}/150</ion-col>
+      <ion-col col-2 class="count">{{stageCount[4]}}/240</ion-col>
+      <ion-col col-2 class="count">{{stageCount[5]}}/450</ion-col>
     </ion-row>
   </ion-grid>
 
