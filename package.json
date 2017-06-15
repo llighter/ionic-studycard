@@ -28,6 +28,7 @@
         "@ionic/storage": "2.0.1",
         "angularfire2": "^4.0.0-rc.0",
         "chart.js": "^2.6.0",
+        "cordova-android": "^6.2.3",
         "cordova-ios": "^4.4.0",
         "cordova-plugin-console": "1.0.5",
         "cordova-plugin-device": "1.1.4",
@@ -120,6 +121,7 @@
             ]
         },
         "platforms": [
+            "android",
             "ios"
         ]
     }
