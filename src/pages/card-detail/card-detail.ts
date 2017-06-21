@@ -24,6 +24,8 @@ export class CardDetail implements OnInit{
   card: CardDTO;
   queryObservable: FirebaseListObservable<any[]>;
   reservedStageObservable: FirebaseListObservable<any[]>;
+  reservedStageKeys: string[] = [];
+  reservedStageValues: CardDTO[] = [];
   fillCountSubject: BehaviorSubject<any>;
   stageSubject: BehaviorSubject<any>;
 
@@ -61,8 +63,22 @@ export class CardDetail implements OnInit{
           query: {
             orderByChild: 'stage',
             equalTo: 0,
-            limitToFirst: this.fillCountSubject
+            // limitToFirst: this.fillCountSubject
           }
+        });
+
+        this.reservedStageObservable.subscribe(snapshots => {
+          // clear reserved keys
+          this.reservedStageKeys = [];
+
+          snapshots.forEach(snapshot => {
+            console.log(snapshot.key);
+            console.log(snapshot.val());
+
+            // Store reserved keys
+            this.reservedStageKeys.push(snapshot.key);
+            this.reservedStageValues.push(snapshot.val());
+          });
         });
 
         this.updateStageCount();
@@ -243,28 +259,22 @@ export class CardDetail implements OnInit{
   fillByReservedStage(): void {
     let remainArea = 30 - this.stageCount[1];
     let numOfReservedCards = this.stageCount[0];
+    let numOfCardToRefill: number = 0;
 
-    if(numOfReservedCards == 0) {
-      console.log("reserved stage is empty..");
-    } else if(remainArea >= numOfReservedCards) {
-      this.fillCountSubject.next(numOfReservedCards);
-    } else if(remainArea < numOfReservedCards) {
-      this.fillCountSubject.next(remainArea);
+    numOfCardToRefill = (remainArea >= numOfReservedCards) 
+      ? numOfReservedCards 
+      : remainArea;
+    console.log(`[numofCardToRefil]${numOfCardToRefill}`);
+    for(let i = 0; i < numOfCardToRefill; i++) {
+      this.reservedStageValues[i].stage = 1;
+
+      // TODO: 2개 이상 충전하면 다 날아간다.
+      this.queryObservable.remove(this.reservedStageKeys[i]);
+      this.queryObservable.push(this.reservedStageValues[i]);
     }
-    console.log(`[Current-count subject]${this.fillCountSubject.getValue()}`);
-
-    // TODO. 어쩔 수 없다. 그냥 키값을 다른 배열에 저장해 놓고 
-    // 하나하나 데이터 업데이트 한다음에 다시 뺏다 넣어야 할것 같다.
-    this.reservedStageObservable.subscribe(snapshots => {
-      snapshots.forEach(snapshot => {
-        console.log(snapshot.key);
-        console.log(snapshot.val());
-
-        // this.queryObservable.remove(snapshot.key);
-        // snapshot.val().stage = 1;
-        // this.queryObservable.push(snapshot.val());
-      });
-    })
   }
 
+  test(): void {
+    console.log(`[reserved stage keys]${JSON.stringify(this.reservedStageKeys)}`);
+  }
 }
